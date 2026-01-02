@@ -1,13 +1,17 @@
 import { Router } from "express";
-import { authMiddleware } from "../middleware/auth.middleware";
 import {
   startInterview,
   submitAnswer,
+  getInterviewHistory,
+  getInterviewAnalytics,
 } from "../controllers/interview.controller";
+import { authMiddleware } from "../middleware/auth.middleware";
 
 const router = Router();
 
-router.post("/start", authMiddleware, startInterview);
+router.get("/start", authMiddleware, startInterview);
 router.post("/submit", authMiddleware, submitAnswer);
+router.get("/history", authMiddleware, getInterviewHistory);
+router.get("/analytics", authMiddleware, getInterviewAnalytics);
 
 export default router;
