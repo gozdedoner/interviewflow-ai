@@ -1,16 +1,16 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import InterviewHeader from "../components/interview/InterviewHeader";
 import QuestionCard from "../components/interview/QuestionCard";
 import AnswerInput from "../components/interview/AnswerInput";
 import ActionButtons from "../components/interview/ActionButtons";
-import FeedbackCard from "../components/interview/FeedbackCard";
+
 import { submitAnswer } from "../services/interviewApi";
 
 export default function InterviewPage() {
   const [answer, setAnswer] = useState("");
   const [loading, setLoading] = useState(false);
-  const [feedback, setFeedback] = useState<any>(null);
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
@@ -20,10 +20,9 @@ export default function InterviewPage() {
       setLoading(true);
       setError("");
 
-      const data = await submitAnswer(answer);
-      setFeedback(data.feedback);
+      await submitAnswer(answer);
 
-      // 👉 submit sonrası analytics
+      // ✅ submit sonrası analytics sayfasına geç
       navigate("/analytics");
     } catch (err: any) {
       setError(err.message || "Something went wrong");
@@ -40,15 +39,9 @@ export default function InterviewPage() {
         language="EN"
       />
 
-      <QuestionCard
-        question="Tell me about a challenging frontend project you worked on. How did you approach the problem and what was the outcome?"
-      />
+      <QuestionCard question="Tell me about a challenging frontend project you worked on. How did you approach the problem and what was the outcome?" />
 
-      <AnswerInput
-        value={answer}
-        onChange={setAnswer}
-        minLength={150}
-      />
+      <AnswerInput value={answer} onChange={setAnswer} minLength={150} />
 
       <ActionButtons
         canSubmit={answer.length >= 150}
@@ -56,14 +49,7 @@ export default function InterviewPage() {
         onSubmit={handleSubmit}
       />
 
-      {error && (
-        <p className="text-red-400 text-center mt-4">
-          {error}
-        </p>
-      )}
-
-      {/* İstersen feedback’i burada da gösterebilirsin */}
-      {feedback && <FeedbackCard feedback={feedback} />}
+      {error && <p className="text-red-400 text-center mt-4">{error}</p>}
     </div>
   );
 }
