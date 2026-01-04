@@ -1,7 +1,7 @@
 // imports
-import { Request, Response } from "express";
-import { analyzeAnswer } from "../services/ai.service";
-import { interviewStore } from "../utils/interviewStore";
+import type { Request, Response } from "express";
+import { analyzeAnswer } from "../services/ai.service.js";
+import { interviewStore } from "../utils/interviewStore.js";
 import { randomUUID } from "crypto";
 
 // start interview
@@ -18,7 +18,6 @@ export const startInterview = async (req: Request, res: Response) => {
   });
 };
 
-// submit answer
 // submit answer
 export const submitAnswer = async (req: Request, res: Response) => {
   const { answer } = req.body;
@@ -51,11 +50,11 @@ export const submitAnswer = async (req: Request, res: Response) => {
   });
 };
 
-// get history ✅ (EN SONA)
+// get history
 export const getInterviewHistory = (req: Request, res: Response) => {
   const user = (req as any).user;
 
-  const history = interviewStore.filter((i) => i.userEmail === user.email);
+  const history = interviewStore.filter((i: any) => i.userEmail === user.email);
 
   res.json({
     count: history.length,
@@ -63,10 +62,13 @@ export const getInterviewHistory = (req: Request, res: Response) => {
   });
 };
 
+// analytics
 export const getInterviewAnalytics = (req: Request, res: Response) => {
   const user = (req as any).user;
 
-  const sessions = interviewStore.filter((i) => i.userEmail === user.email);
+  const sessions = interviewStore.filter(
+    (i: any) => i.userEmail === user.email
+  );
 
   if (sessions.length === 0) {
     return res.json({
@@ -77,8 +79,9 @@ export const getInterviewAnalytics = (req: Request, res: Response) => {
     });
   }
 
-  const scores = sessions.map((s) => s.feedback.score);
-  const averageScore = scores.reduce((a, b) => a + b, 0) / scores.length;
+  const scores = sessions.map((s: any) => s.feedback.score);
+  const averageScore =
+    scores.reduce((a: number, b: number) => a + b, 0) / scores.length;
 
   const trend =
     scores.length >= 2 && scores[scores.length - 1] > scores[0]
@@ -87,7 +90,7 @@ export const getInterviewAnalytics = (req: Request, res: Response) => {
 
   const strengthsMap: Record<string, number> = {};
 
-  sessions.forEach((s) => {
+  sessions.forEach((s: any) => {
     s.feedback.strengths.forEach((skill: string) => {
       strengthsMap[skill] = (strengthsMap[skill] || 0) + 1;
     });

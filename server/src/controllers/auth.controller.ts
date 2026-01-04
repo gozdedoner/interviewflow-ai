@@ -1,5 +1,5 @@
-import { Request, Response } from "express";
-import { signToken } from "../utils/jwt";
+import type { Request, Response } from "express";
+import { signToken } from "../utils/jwt.js";
 
 export const register = async (req: Request, res: Response) => {
   const { email } = req.body;

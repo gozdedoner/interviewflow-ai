@@ -1,3 +1,3 @@
-import { InterviewSession } from "../types/interview";
+import type { InterviewSession } from "../types/interview.js";
 
 export const interviewStore: InterviewSession[] = [];
