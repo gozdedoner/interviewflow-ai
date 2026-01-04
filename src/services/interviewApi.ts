@@ -1,12 +1,10 @@
-const API_URL = "http://localhost:4000/api";
-
 export async function submitAnswer(answer: string) {
-  const res = await fetch(`${API_URL}/interview/submit`, {
+  const res = await fetch(`${API_URL}/api/interview/submit`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    credentials: "include", // 🔥 ASIL OLAY BU
+    credentials: "include", // ✅ COOKIE GİDER
     body: JSON.stringify({ answer }),
   });
 
